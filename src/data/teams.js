@@ -1,0 +1,22 @@
+export const teams = [
+  { name: "Galatasaray" },
+  { name: "Fenerbahçe" },
+  { name: "Beşiktaş" },
+  { name: "Trabzonspor" },
+  { name: "Başakşehir" },
+  { name: "Adana Demirspor" },
+  { name: "Konyaspor" },
+  { name: "Antalyaspor" },
+  { name: "Sivasspor" },
+  { name: "Hatayspor" },
+  { name: "Alanyaspor" },
+  { name: "Ankaragücü" },
+  { name: "Kasımpaşa" },
+  { name: "Rizespor" },
+  { name: "İstanbulspor" },
+  { name: "Bursaspor" },
+  { name: "Eskişehirspor" },
+  { name: "Gençlerbirliği" },
+  { name: "Karagümrük" },
+  { name: "Boluspor" }
+];
