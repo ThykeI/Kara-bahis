@@ -9,21 +9,17 @@ function App() {
   useEffect(() => {
     const saved = localStorage.getItem("kara_bahis_user");
     if (saved) {
-      setPlayer(JSON.parse(saved));
+      try {
+        setPlayer(JSON.parse(saved));
+      } catch (e) {
+        console.error("Kayıt çözümlenemedi:", e);
+        localStorage.removeItem("kara_bahis_user");
+      }
     }
-
-    const bg = new Audio("/sounds/bg.mp3");
-    bg.loop = true;
-    if (bgmOn) {
-      bg.play();
-    } else {
-      bg.pause();
-    }
-
-    return () => bg.pause();
-  }, [bgmOn]);
+  }, []);
 
   const getPsychoClass = (psy) => {
+    if (!psy && psy !== 0) return "";
     if (psy > 70) return "bg-normal";
     if (psy > 30) return "bg-anxious";
     return "bg-collapse";
@@ -36,15 +32,19 @@ function App() {
 
   return (
     <div className={`min-h-screen font-sans ${player ? getPsychoClass(player.psychology) : ''} ${isNight() ? 'bg-night' : ''}`}>
-      {player && (
-        <button
-          className="fixed top-2 right-2 bg-gray-700 px-3 py-1 rounded"
-          onClick={() => setBgmOn(!bgmOn)}
-        >
-          {bgmOn ? "Müziği Kapat" : "Müziği Aç"}
-        </button>
+      {player ? (
+        <>
+          <button
+            className="fixed top-2 right-2 bg-gray-700 px-3 py-1 rounded"
+            onClick={() => setBgmOn(!bgmOn)}
+          >
+            {bgmOn ? "Müziği Kapat" : "Müziği Aç"}
+          </button>
+          <Game player={player} setPlayer={setPlayer} />
+        </>
+      ) : (
+        <Login onLogin={setPlayer} />
       )}
-      {!player ? <Login onLogin={setPlayer} /> : <Game player={player} setPlayer={setPlayer} />}
     </div>
   );
 }
