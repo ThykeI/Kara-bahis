@@ -11,31 +11,41 @@ const Login = ({ onLogin }) => {
   const [selectedChar, setSelectedChar] = useState(characterOptions[0]);
 
   const handleLogin = () => {
-    if (username.trim()) {
-      const player = {
-        username,
-        character: selectedChar.type,
-        balance: selectedChar.balance,
-        psychology: selectedChar.psychology
-      };
+    if (!username.trim()) {
+      alert("Lütfen ismini yaz.");
+      return;
+    }
+
+    const player = {
+      username: username.trim(),
+      character: selectedChar.type,
+      balance: selectedChar.balance,
+      psychology: selectedChar.psychology
+    };
+
+    try {
       localStorage.setItem("kara_bahis_user", JSON.stringify(player));
-      onLogin(player);
+      onLogin(player); // App.js tarafında setPlayer() tetiklenir
+    } catch (err) {
+      console.error("Login sırasında hata:", err);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
       <h1 className="text-4xl font-bold mb-4">Kara Bahis</h1>
+      
       <input
         type="text"
         placeholder="İsmini yaz..."
         value={username}
-        onChange={e => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
         className="p-2 text-black rounded w-full max-w-xs"
       />
+
       <select
         value={selectedChar.type}
-        onChange={e => {
+        onChange={(e) => {
           const chosen = characterOptions.find(c => c.type === e.target.value);
           setSelectedChar(chosen);
         }}
@@ -45,6 +55,7 @@ const Login = ({ onLogin }) => {
           <option key={c.type} value={c.type}>{c.type}</option>
         ))}
       </select>
+
       <button
         onClick={handleLogin}
         className="mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 rounded"
